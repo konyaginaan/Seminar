@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Из двух слов — тема</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mist:#F2EFEC;
+    --paper:#FAF8F6;
+    --ink:#2B2733;
+    --ink-soft:#453F4C;
+    --rose:#C98D93;
+    --rose-ink:#9C5D66;
+    --mauve:#9C7C8C;
+    --lavender:#9B8FB0;
+    --bluebell:#7C93B0;
+    --teal:#6E9C93;
+    --teal-ink:#4C766D;
+    --sage:#8FA37E;
+    --plum:#6B4F6B;
+    --dusty:#B0A18F;
+    --scheme-1:#9C7C8C;
+    --scheme-2:#90727F;
+    --scheme-3:#846873;
+    --scheme-4:#785E67;
+    --scheme-5:#6C545C;
+    --scheme-6:#604A50;
+    --scheme-7:#544045;
+    --scheme-8:#483639;
+    --scheme-9:#3D2C2F;
+    --line:rgba(43,39,51,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    background:var(--mist);
+    color:var(--ink);
+    font-family:'Karla', system-ui, sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 20px 80px;
+    position:relative;
+  }
+
+  /* ---------- signature: growth thread ---------- */
+  .thread{
+    position:absolute;
+    left:6px;
+    top:0;
+    bottom:0;
+    width:3px;
+    border-radius:3px;
+    background:linear-gradient(
+      to bottom,
+      var(--dusty) 0%,
+      var(--bluebell) 14%,
+      var(--teal) 28%,
+      var(--sage) 42%,
+      var(--rose) 56%,
+      var(--lavender) 70%,
+      var(--plum) 84%,
+      var(--plum) 100%
+    );
+    opacity:0.55;
+  }
+  @media (max-width:480px){ .thread{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:56px 0 28px;
+    text-align:left;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:2.5rem;
+    line-height:1.15;
+    margin:0 0 18px;
+  }
+  .hero p.lede{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:52ch;
+  }
+  .hero .thesis{
+    margin-top:26px;
+    padding:16px 18px;
+    background:var(--paper);
+    border-left:3px solid var(--plum);
+    border-radius:2px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--plum);
+  }
+
+  /* ---------- section labels ---------- */
+  .section-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:52px 0 10px;
+  }
+  .section-intro{
+    font-size:0.98rem;
+    color:var(--ink-soft);
+    margin:0 0 22px;
+  }
+
+  /* ---------- accordion (types) ---------- */
+  .types{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  details.type{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    overflow:hidden;
+    --accent: var(--dusty);
+  }
+  details.type[open]{
+    box-shadow:0 2px 14px rgba(43,39,51,0.06);
+  }
+  details.type summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  details.type summary::-webkit-details-marker{ display:none; }
+  .dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    flex:none;
+  }
+  .type-name{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.28rem;
+    flex:1;
+  }
+  .chevron{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--ink-soft);
+    font-size:14px;
+    transition:transform 0.2s ease;
+    flex:none;
+  }
+  details.type[open] .chevron{ transform:rotate(45deg); }
+
+  .tension{
+    display:flex;
+    gap:3px;
+    margin:0 0 0 24px;
+    flex:none;
+  }
+  .tension span{
+    width:5px;
+    height:14px;
+    border-radius:2px;
+    background:var(--line);
+  }
+  .tension span.on{ background:var(--accent); }
+
+  .type-body{
+    padding:0 18px 20px 42px;
+    color:var(--ink-soft);
+    font-size:0.98rem;
+  }
+  .type-body .example{
+    margin:12px 0 10px;
+    padding:10px 14px;
+    background:var(--mist);
+    border-radius:8px;
+    font-style:italic;
+    color:var(--ink);
+  }
+  .type-body .example::before{
+    content:"— ";
+    font-style:normal;
+    color:var(--accent);
+  }
+
+  details.type:nth-of-type(1){ --accent: var(--dusty); }
+  details.type:nth-of-type(2){ --accent: var(--bluebell); }
+  details.type:nth-of-type(3){ --accent: var(--teal); }
+  details.type:nth-of-type(4){ --accent: var(--sage); }
+  details.type:nth-of-type(5){ --accent: var(--rose); }
+  details.type:nth-of-type(6){ --accent: var(--lavender); }
+  details.type:nth-of-type(7){ --accent: var(--plum); }
+
+  /* ---------- filters ---------- */
+  .filter{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .filter h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:0 0 10px;
+  }
+  .weak, .strong{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    font-size:0.95rem;
+    margin:6px 0;
+  }
+  .weak .tag, .strong .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    flex:none;
+    width:98px;
+    color:var(--ink-soft);
+  }
+  .weak span.txt, .strong span.txt{ flex:1; min-width:0; }
+  .weak span.txt{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--line); }
+  .strong span.txt{ color:var(--ink); font-weight:500; }
+  .strong .tag{ color:var(--teal-ink); }
+
+  /* ---------- stake / case ---------- */
+  .case{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    padding:20px 20px 8px;
+  }
+  .case-row{
+    display:flex;
+    gap:14px;
+    padding-bottom:16px;
+    margin-bottom:16px;
+    border-bottom:1px dashed var(--line);
+  }
+  .case-row:last-child{ border-bottom:none; margin-bottom:0; }
+  .case-row .label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--rose-ink);
+    flex:none;
+    width:78px;
+    padding-top:2px;
+  }
+  .case-row .val{ font-size:0.98rem; }
+  .case-row .val.quote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.1rem; }
+
+  /* ---------- formula ---------- */
+  .scheme{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+    margin:22px 0 10px;
+  }
+  .scheme-bar{
+    width:var(--w);
+    max-width:100%;
+    text-align:left;
+    padding:11px 14px;
+    border-radius:7px;
+    background:var(--c);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.01em;
+    line-height:1.3;
+  }
+  .scheme-arrow{
+    color:var(--ink-soft);
+    opacity:0.45;
+    font-size:11px;
+    line-height:1;
+    padding-left:14px;
+  }
+  .scheme-caption{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    text-align:left;
+    margin:8px 0 0;
+  }
+  .formula-final{
+    margin-top:20px;
+    padding:20px;
+    background:var(--plum);
+    border-radius:10px;
+    color:var(--paper);
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.35rem;
+    text-align:center;
+    line-height:1.4;
+  }
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- part 2: word bank brainstorm ---------- */
+  .part-divider{
+    margin-top:76px;
+    padding-top:44px;
+    border-top:1px solid var(--line);
+  }
+  .part-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:2rem;
+    line-height:1.2;
+    margin:0 0 14px;
+  }
+  .bank-controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:18px 0 12px;
+  }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:10px 16px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .bank-status{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .bank{
+    display:flex;
+    flex-wrap:wrap;
+    margin:0 0 8px;
+  }
+  .chip{
+    padding:2px 5px;
+    margin:2px 0;
+    border-radius:3px;
+    background:transparent;
+    color:var(--plum);
+    font-family:'Karla', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    font-size:0.92rem;
+    line-height:1.5;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .12s ease, color .12s ease;
+  }
+  .chip:active{ background:var(--line); }
+  .chip.row-selected{ background:var(--teal); color:var(--paper); }
+  .chip.col-selected{ background:var(--plum); color:var(--paper); }
+
+  .grid-wrap{
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:18px 0 6px;
+  }
+  .grid-table{ border-collapse:separate; border-spacing:4px; }
+  .grid-table .corner{ width:64px; }
+  .col-head, .row-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    border-radius:5px;
+  }
+  .col-head{
+    color:var(--plum);
+    background:rgba(107,79,107,0.08);
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    white-space:nowrap;
+    height:88px;
+    padding:6px 3px;
+    vertical-align:bottom;
+  }
+  .row-head{
+    color:var(--teal-ink);
+    background:rgba(110,156,147,0.12);
+    text-align:left;
+    width:64px;
+    padding:5px 6px;
+    white-space:normal;
+    word-break:break-word;
+    line-height:1.15;
+    vertical-align:middle;
+  }
+  .cell-btn{
+    width:100%;
+    min-width:38px;
+    height:38px;
+    border-radius:7px;
+    border:1px dashed var(--line);
+    background:var(--mist);
+    color:var(--ink-soft);
+    font-size:13px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cell-btn:active{ background:var(--sage); border-color:var(--sage); color:var(--paper); }
+
+  .pair-result{
+    margin-top:22px;
+    padding:24px 20px;
+    border-radius:12px;
+    background:var(--plum);
+    color:var(--paper);
+    text-align:center;
+  }
+  .pair-result .pair{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.55rem;
+  }
+  .pair-result .nudge{
+    margin-top:10px;
+    font-size:0.9rem;
+    font-style:italic;
+    opacity:0.88;
+  }
+</style>
+<body>
+<div class="page">
+  <div class="thread"></div>
+
+  <section class="hero">
+    <p class="eyebrow">Раздатка · часть 2</p>
+    <h1>Из двух слов — тема</h1>
+    <p class="lede">Библиотека из 160 слов — это не тема сама по себе, а сырьё. Выбираешь слова, часть уходит в строки, часть — в столбцы, а дальше просто тыкаешь в любую клетку.</p>
+    <p style="margin-top:22px;">
+      <a href="issledovatelskiy-vopros.html" class="btn" style="display:inline-block; text-decoration:none;">← Часть 1 · Как рождается вопрос</a>
+    </p>
+  </section>
+
+  <section>
+    <p class="section-intro">Тапни по словам ниже, чтобы добавить их в таблицу, или впиши своё слово вручную — например, если нашёл его в самой библиотеке-ризоме. Первая половина выбранных уйдёт в строки (бирюзовым), вторая — в столбцы (пламовым). Можно взять любое количество слов — для начала хватит 8–10.</p>
+
+    <p style="margin:0 0 20px;">
+      <a href="https://publish.obsidian.md/psyrizome/%D0%91%D0%B8%D0%B1%D0%BB%D0%B8%D0%BE%D1%82%D0%B5%D0%BA%D0%B0+%D0%B2%D0%BE%D0%B7%D0%BC%D0%BE%D0%B6%D0%BD%D1%8B%D1%85+%D1%82%D0%B5%D0%BC" target="_blank" rel="noopener" class="btn" style="display:inline-block; text-decoration:none;">Открыть библиотеку-ризому ↗</a>
+    </p>
+
+    <div class="bank-controls">
+      <button class="btn" id="randomBtn" type="button">Случайные 10</button>
+      <button class="btn" id="resetBtn" type="button">Сбросить</button>
+    </div>
+
+    <div class="bank-controls" style="margin-top:0;">
+      <input type="text" id="customWordInput" placeholder="своё слово…" style="font-family:'Karla',sans-serif; font-size:0.92rem; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); flex:1; min-width:140px;">
+      <button class="btn" id="addWordBtn" type="button">Добавить</button>
+    </div>
+
+    <p class="bank-status" id="bankStatus">Выбрано: 0</p>
+    <div class="bank" id="selectedList"></div>
+
+    <p class="section-label" style="margin-top:30px;">Банк слов</p>
+    <div class="bank" id="wordBank"></div>
+
+    <div id="gridSection" style="display:none;">
+      <p class="section-label" style="margin-top:36px;">Таблица</p>
+      <div class="grid-wrap">
+        <table class="grid-table" id="gridTable"></table>
+      </div>
+
+      <div class="pair-result" id="pairResult" style="display:none;">
+        <div class="pair" id="pairText"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Раздатка к семинару · часть 2 из 2</footer>
+</div>
+
+<script>
+(function(){
+  var WORDS = ["След","Иллюзия","Дверь","Гнев","Порог","Смысл","Маска","Расставание","Вина","Свет","Самость","Лабиринт","Судьба","Граница","Сон","Зависть","Привязанность","Тело","Миф","Ошибка","Безмолвие","Отвержение","Сексуальность","Память","Взгляд","Тревога","Любовь","Хаос","Самозванство","Полет","Свидетельство","Стена","Воображение","Психоз","Вера","Субъектность","Нежность","Перенос","Карнавал","Зритель","Распад","Позиция","Либидо","Самостоятельность","Сопротивление","Признание","Смерть","Преследование","Встреча","Сублимация","Стыд","Голос","Уверенность","Травма","Перверсия","Профанность","Банальность","Интроекция","Соблазн","Сила","Время","Двойник","Соцсети","Дом","Защита","Потеря","Знание","Бессознательное","Запрет","Печать","Разрыв","Близость","Доступ","Исцеление","Расщепление","Темнота","Внутренность","Одиночество","Гипотеза","Черновик","Желание","Реальность","Принятие","Власть","Мысль","Незавершенность","Отчаяние","Сомнение","Присутствие","Высказывание","Состояние","Структура","Восприятие","Фантазия","Проекция","Депрессия","Влечение","Ритуал","Конфликт","Усталость","Шепот","Крик","Пауза","Тишина","Движение","Пространство","Дыхание","Сердце","Пробуждение","Шрам","Первичность","Архетип","Пророчество","Оракул","Искушение","Грех","Интеграция","Мания","Эйфория","Агрессия","Парадокс","Сакральность","Ложь","Правда","Настоящее","Будущее","Прошлое","Случай","Связь","Целостность","Энергия","Репарация","Трансформация","Идентичность","Характер","Самоопределение","Авторство","Цензура","Самооценка","Слабость","Ярость","Свобода","Принадлежность","Боль","Болезнь","Красота","Забывание","Текст","Сцена","Читатель","Творчество","Искусство","Закон","Справедливость","Насилие","Публичность","Символ","Нарциссизм","Игра","Окно"];
+
+  var selected = [];
+  var bankEl = document.getElementById('wordBank');
+  var statusEl = document.getElementById('bankStatus');
+  var selectedListEl = document.getElementById('selectedList');
+  var customInput = document.getElementById('customWordInput');
+  var gridSection = document.getElementById('gridSection');
+  var gridTable = document.getElementById('gridTable');
+  var pairResult = document.getElementById('pairResult');
+  var pairText = document.getElementById('pairText');
+
+  function renderBank(){
+    bankEl.innerHTML = '';
+    var half = Math.ceil(selected.length / 2);
+    WORDS.forEach(function(w){
+      var chip = document.createElement('span');
+      var idx = selected.indexOf(w);
+      chip.className = 'chip' + (idx === -1 ? '' : (idx < half ? ' row-selected' : ' col-selected'));
+      chip.textContent = w;
+      chip.addEventListener('click', function(){ toggleWord(w); });
+      bankEl.appendChild(chip);
+    });
+    renderSelectedList();
+    statusEl.textContent = 'Выбрано: ' + selected.length;
+  }
+
+  function renderSelectedList(){
+    selectedListEl.innerHTML = '';
+    var half = Math.ceil(selected.length / 2);
+    selected.forEach(function(w, idx){
+      var chip = document.createElement('span');
+      chip.className = 'chip' + (idx < half ? ' row-selected' : ' col-selected');
+      chip.textContent = w + ' ×';
+      chip.title = 'Убрать «' + w + '»';
+      chip.addEventListener('click', function(){ toggleWord(w); });
+      selectedListEl.appendChild(chip);
+    });
+  }
+
+  function addCustomWord(){
+    var w = customInput.value.trim();
+    if(!w) return;
+    w = w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    if(selected.indexOf(w) === -1){ selected.push(w); }
+    customInput.value = '';
+    renderBank();
+    renderGrid();
+  }
+
+  function toggleWord(w){
+    var idx = selected.indexOf(w);
+    if(idx !== -1){ selected.splice(idx, 1); } else { selected.push(w); }
+    renderBank();
+    renderGrid();
+  }
+
+  function renderGrid(){
+    var half = Math.ceil(selected.length / 2);
+    var rows = selected.slice(0, half);
+    var cols = selected.slice(half);
+    if(rows.length === 0 || cols.length === 0){
+      gridSection.style.display = 'none';
+      return;
+    }
+    gridSection.style.display = 'block';
+
+    var maxLen = 0;
+    cols.forEach(function(c){ if(c.length > maxLen) maxLen = c.length; });
+    var headH = Math.max(70, maxLen * 10.5 + 24);
+
+    var html = '<tr><td class="corner"></td>';
+    cols.forEach(function(c){ html += '<th class="col-head" style="height:' + headH + 'px;">' + c + '</th>'; });
+    html += '</tr>';
+    rows.forEach(function(r){
+      html += '<tr><th class="row-head">' + r + '</th>';
+      cols.forEach(function(c){
+        html += '<td><button class="cell-btn" type="button" data-row="' + r + '" data-col="' + c + '">+</button></td>';
+      });
+      html += '</tr>';
+    });
+    gridTable.innerHTML = html;
+
+    var btns = gridTable.querySelectorAll('.cell-btn');
+    for(var i=0; i<btns.length; i++){
+      btns[i].addEventListener('click', function(e){
+        var r = e.target.getAttribute('data-row');
+        var c = e.target.getAttribute('data-col');
+        pairText.textContent = r + ' × ' + c;
+        pairResult.style.display = 'block';
+        pairResult.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    }
+  }
+
+  document.getElementById('randomBtn').addEventListener('click', function(){
+    var pool = WORDS.slice();
+    for(var i = pool.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = pool[i]; pool[i] = pool[j]; pool[j] = t;
+    }
+    selected = pool.slice(0, 10);
+    pairResult.style.display = 'none';
+    renderBank();
+    renderGrid();
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    selected = [];
+    pairResult.style.display = 'none';
+    renderBank();
+    renderGrid();
+  });
+
+  document.getElementById('addWordBtn').addEventListener('click', addCustomWord);
+  customInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); addCustomWord(); }
+  });
+
+  renderBank();
+})();
+</script>
+</body>
+</html>
