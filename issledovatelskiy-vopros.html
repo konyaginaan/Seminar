@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как рождается исследовательский вопрос</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mist:#F2EFEC;
+    --paper:#FAF8F6;
+    --ink:#2B2733;
+    --ink-soft:#453F4C;
+    --rose:#C98D93;
+    --rose-ink:#9C5D66;
+    --mauve:#9C7C8C;
+    --lavender:#9B8FB0;
+    --bluebell:#7C93B0;
+    --teal:#6E9C93;
+    --teal-ink:#4C766D;
+    --sage:#8FA37E;
+    --plum:#6B4F6B;
+    --dusty:#B0A18F;
+    --scheme-1:#9C7C8C;
+    --scheme-2:#90727F;
+    --scheme-3:#846873;
+    --scheme-4:#785E67;
+    --scheme-5:#6C545C;
+    --scheme-6:#604A50;
+    --scheme-7:#544045;
+    --scheme-8:#483639;
+    --scheme-9:#3D2C2F;
+    --line:rgba(43,39,51,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    background:var(--mist);
+    color:var(--ink);
+    font-family:'Karla', system-ui, sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 20px 80px;
+    position:relative;
+  }
+
+  /* ---------- signature: growth thread ---------- */
+  .thread{
+    position:absolute;
+    left:6px;
+    top:0;
+    bottom:0;
+    width:3px;
+    border-radius:3px;
+    background:linear-gradient(
+      to bottom,
+      var(--dusty) 0%,
+      var(--bluebell) 14%,
+      var(--teal) 28%,
+      var(--sage) 42%,
+      var(--rose) 56%,
+      var(--lavender) 70%,
+      var(--plum) 84%,
+      var(--plum) 100%
+    );
+    opacity:0.55;
+  }
+  @media (max-width:480px){ .thread{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:56px 0 28px;
+    text-align:left;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:2.5rem;
+    line-height:1.15;
+    margin:0 0 18px;
+  }
+  .hero p.lede{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:52ch;
+  }
+  .hero .thesis{
+    margin-top:26px;
+    padding:16px 18px;
+    background:var(--paper);
+    border-left:3px solid var(--plum);
+    border-radius:2px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.15rem;
+    color:var(--plum);
+  }
+
+  /* ---------- section labels ---------- */
+  .section-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:52px 0 10px;
+  }
+  .section-intro{
+    font-size:0.98rem;
+    color:var(--ink-soft);
+    margin:0 0 22px;
+  }
+
+  /* ---------- accordion (types) ---------- */
+  .types{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  details.type{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    overflow:hidden;
+    --accent: var(--dusty);
+  }
+  details.type[open]{
+    box-shadow:0 2px 14px rgba(43,39,51,0.06);
+  }
+  details.type summary{
+    list-style:none;
+    cursor:pointer;
+    padding:16px 18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  details.type summary::-webkit-details-marker{ display:none; }
+  .dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:var(--accent);
+    flex:none;
+  }
+  .type-name{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.28rem;
+    flex:1;
+  }
+  .chevron{
+    font-family:'JetBrains Mono', monospace;
+    color:var(--ink-soft);
+    font-size:14px;
+    transition:transform 0.2s ease;
+    flex:none;
+  }
+  details.type[open] .chevron{ transform:rotate(45deg); }
+
+  .tension{
+    display:flex;
+    gap:3px;
+    margin:0 0 0 24px;
+    flex:none;
+  }
+  .tension span{
+    width:5px;
+    height:14px;
+    border-radius:2px;
+    background:var(--line);
+  }
+  .tension span.on{ background:var(--accent); }
+
+  .type-body{
+    padding:0 18px 20px 42px;
+    color:var(--ink-soft);
+    font-size:0.98rem;
+  }
+  .type-body .example{
+    margin:12px 0 10px;
+    padding:10px 14px;
+    background:var(--mist);
+    border-radius:8px;
+    font-style:italic;
+    color:var(--ink);
+  }
+  .type-body .example::before{
+    content:"— ";
+    font-style:normal;
+    color:var(--accent);
+  }
+
+  details.type:nth-of-type(1){ --accent: var(--dusty); }
+  details.type:nth-of-type(2){ --accent: var(--bluebell); }
+  details.type:nth-of-type(3){ --accent: var(--teal); }
+  details.type:nth-of-type(4){ --accent: var(--sage); }
+  details.type:nth-of-type(5){ --accent: var(--rose); }
+  details.type:nth-of-type(6){ --accent: var(--lavender); }
+  details.type:nth-of-type(7){ --accent: var(--plum); }
+
+  /* ---------- filters ---------- */
+  .filter{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .filter h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:0 0 10px;
+  }
+  .weak, .strong{
+    display:flex;
+    gap:10px;
+    align-items:baseline;
+    font-size:0.95rem;
+    margin:6px 0;
+  }
+  .weak .tag, .strong .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    flex:none;
+    width:98px;
+    color:var(--ink-soft);
+  }
+  .weak span.txt, .strong span.txt{ flex:1; min-width:0; }
+  .weak span.txt{ color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--line); }
+  .strong span.txt{ color:var(--ink); font-weight:500; }
+  .strong .tag{ color:var(--teal-ink); }
+
+  /* ---------- stake / case ---------- */
+  .case{
+    background:var(--paper);
+    border-radius:10px;
+    border:1px solid var(--line);
+    padding:20px 20px 8px;
+  }
+  .case-row{
+    display:flex;
+    gap:14px;
+    padding-bottom:16px;
+    margin-bottom:16px;
+    border-bottom:1px dashed var(--line);
+  }
+  .case-row:last-child{ border-bottom:none; margin-bottom:0; }
+  .case-row .label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--rose-ink);
+    flex:none;
+    width:78px;
+    padding-top:2px;
+  }
+  .case-row .val{ font-size:0.98rem; }
+  .case-row .val.quote{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.1rem; }
+
+  /* ---------- formula ---------- */
+  .scheme{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+    margin:22px 0 10px;
+  }
+  .scheme-bar{
+    width:var(--w);
+    max-width:100%;
+    text-align:left;
+    padding:11px 14px;
+    border-radius:7px;
+    background:var(--c);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.01em;
+    line-height:1.3;
+  }
+  .scheme-arrow{
+    color:var(--ink-soft);
+    opacity:0.45;
+    font-size:11px;
+    line-height:1;
+    padding-left:14px;
+  }
+  .scheme-caption{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    text-align:left;
+    margin:8px 0 0;
+  }
+  .formula-final{
+    margin-top:20px;
+    padding:20px;
+    background:var(--plum);
+    border-radius:10px;
+    color:var(--paper);
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.35rem;
+    text-align:center;
+    line-height:1.4;
+  }
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- part 2: word bank brainstorm ---------- */
+  .part-divider{
+    margin-top:76px;
+    padding-top:44px;
+    border-top:1px solid var(--line);
+  }
+  .part-title{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:2rem;
+    line-height:1.2;
+    margin:0 0 14px;
+  }
+  .bank-controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:18px 0 12px;
+  }
+  .btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    padding:10px 16px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{ transform:scale(0.97); }
+  .bank-status{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .bank{
+    display:flex;
+    flex-wrap:wrap;
+    margin:0 0 8px;
+  }
+  .chip{
+    padding:2px 5px;
+    margin:2px 0;
+    border-radius:3px;
+    background:transparent;
+    color:var(--plum);
+    font-family:'Karla', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    font-size:0.92rem;
+    line-height:1.5;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:background .12s ease, color .12s ease;
+  }
+  .chip:active{ background:var(--line); }
+  .chip.row-selected{ background:var(--teal); color:var(--paper); }
+  .chip.col-selected{ background:var(--plum); color:var(--paper); }
+
+  .grid-wrap{
+    max-width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:18px 0 6px;
+  }
+  .grid-table{ border-collapse:separate; border-spacing:4px; }
+  .grid-table .corner{ width:64px; }
+  .col-head, .row-head{
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    border-radius:5px;
+  }
+  .col-head{
+    color:var(--plum);
+    background:rgba(107,79,107,0.08);
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    white-space:nowrap;
+    height:88px;
+    padding:6px 3px;
+    vertical-align:bottom;
+  }
+  .row-head{
+    color:var(--teal-ink);
+    background:rgba(110,156,147,0.12);
+    text-align:left;
+    width:64px;
+    padding:5px 6px;
+    white-space:normal;
+    word-break:break-word;
+    line-height:1.15;
+    vertical-align:middle;
+  }
+  .cell-btn{
+    width:100%;
+    min-width:38px;
+    height:38px;
+    border-radius:7px;
+    border:1px dashed var(--line);
+    background:var(--mist);
+    color:var(--ink-soft);
+    font-size:13px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .cell-btn:active{ background:var(--sage); border-color:var(--sage); color:var(--paper); }
+
+  .pair-result{
+    margin-top:22px;
+    padding:24px 20px;
+    border-radius:12px;
+    background:var(--plum);
+    color:var(--paper);
+    text-align:center;
+  }
+  .pair-result .pair{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.55rem;
+  }
+  .pair-result .nudge{
+    margin-top:10px;
+    font-size:0.9rem;
+    font-style:italic;
+    opacity:0.88;
+  }
+</style>
+<body>
+<div class="page">
+  <div class="thread"></div>
+
+  <section class="hero">
+    <p class="eyebrow">Раздатка · часть 1</p>
+    <h1>Как рождается исследовательский вопрос</h1>
+    <p class="lede">Семь типов вопросов, пять фильтров и одна формула — путь от связки слов до готового текста.</p>
+    <div class="thesis">Важно не искать тему, а ставить вопросы.</div>
+  </section>
+
+  <section>
+    <p class="section-label">Зачем разбирать вопросы по типам</p>
+    <p class="section-intro">Когда вопросы уже поставлены, с ними стоит немного поработать — разобрать по типам. Тип вопроса подсказывает, какой именно текст или проект может из него получиться. Точки слева на каждой карточке — это условный «градус напряжения»: чем он выше, тем ближе вопрос к готовой авторской теме.</p>
+
+    <div class="types">
+
+      <details class="type" open>
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Описательный</span>
+          <span class="tension"><span class="on"></span><span></span><span></span><span></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Помогает войти в тему, но редко становится финальной темой сам по себе.</p>
+          <p class="example">Что такое иллюзия у Фрейда?</p>
+          <p>Полезен для справки, заметки или введения — но напряжения в нём пока мало.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Различительный</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Помогает отделить одно понятие от другого — провести границу там, где она размыта.</p>
+          <p class="example">Чем иллюзия отличается от фантазии, ошибки, веры и самообмана?</p>
+          <p>Хороший тип вопроса для теоретической заметки: он сразу требует различений, а не описаний.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Функциональный</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Здесь меняется сама постановка: не «что это такое?», а «что это делает?».</p>
+          <p class="example">Что делает иллюзия для психики?</p>
+          <p>Для психоаналитического исследования — особенно сильный ход: понятие превращается в работающий механизм.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Генетический</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Спрашивает, как что-то возникает, откуда берётся.</p>
+          <p class="example">Как возникает иллюзия?</p>
+          <p>Подходит для тем развития, детства, переходного пространства, игры, фантазии, формирования Я.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Полемический</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>В нём уже заложен спор или переворот привычного понимания — почти готовая авторская тема.</p>
+          <p class="example">Почему иллюзия не всегда является ошибкой?</p>
+          <p>Конфликт с обыденным пониманием уже встроен в сам вопрос.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Культурный</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Выводит понятие в социальный, исторический или медиальный контекст.</p>
+          <p class="example">Почему современная культура производит всё больше правдоподобных иллюзий?</p>
+          <p>Отсюда может вырасти разговор о медиа, соцсетях, ИИ, виртуальности, симулякрах, публичности.</p>
+        </div>
+      </details>
+
+      <details class="type">
+        <summary>
+          <span class="dot"></span>
+          <span class="type-name">Клинический</span>
+          <span class="tension"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></span>
+          <span class="chevron">+</span>
+        </summary>
+        <div class="type-body">
+          <p>Связывает понятие с психической жизнью — симптомом, защитой, переносом, фантазией, терапевтической ситуацией.</p>
+          <p class="example">Когда иллюзия поддерживает жизнь, а когда становится защитой от реальности?</p>
+          <p>Сильный вопрос именно потому, что удерживает напряжение: иллюзия здесь одновременно и ресурс, и защита.</p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Как проверить, что вопрос хороший</p>
+    <p class="section-intro">Когда вопросы уже появились, стоит пропустить их через пять фильтров.</p>
+
+    <div class="filter">
+      <h3>Не слишком ли он общий?</h3>
+      <div class="weak"><span class="tag">широко</span><span class="txt">Что такое иллюзия?</span></div>
+      <div class="strong"><span class="tag">лучше</span><span class="txt">Почему у Винникотта иллюзия становится условием творчества, а не ошибкой восприятия?</span></div>
+    </div>
+
+    <div class="filter">
+      <h3>Есть ли в нём напряжение?</h3>
+      <div class="weak"><span class="tag">слабо</span><span class="txt">Иллюзия в искусстве.</span></div>
+      <div class="strong"><span class="tag">сильнее</span><span class="txt">Почему зритель хочет быть обманутым, хотя знает, что перед ним искусственная сцена?</span></div>
+    </div>
+
+    <div class="filter">
+      <h3>Можно ли искать под него источники?</h3>
+      <div class="weak"><span class="tag">субъективно</span><span class="txt">Почему мне нравятся иллюзии?</span></div>
+      <div class="strong"><span class="tag">лучше</span><span class="txt">Как психоанализ и теория искусства объясняют удовольствие от добровольного обмана?</span></div>
+    </div>
+
+    <div class="filter">
+      <h3>Не сводится ли он к «да» или «нет»?</h3>
+      <div class="weak"><span class="tag">слабо</span><span class="txt">Иллюзия вредна?</span></div>
+      <div class="strong"><span class="tag">лучше</span><span class="txt">В каких случаях иллюзия поддерживает психику, а в каких мешает встрече с реальностью?</span></div>
+    </div>
+
+    <div class="filter">
+      <h3>Виден ли в нём будущий текст?</h3>
+      <p style="margin:0 0 10px; font-size:0.95rem; color:var(--ink-soft);">Хороший вопрос уже почти содержит структуру будущего текста. Например, из вопроса про иллюзию и защиту от реальности сразу видно:</p>
+      <p style="margin:0; font-size:0.92rem; color:var(--ink); line-height:1.9;">
+        1. что такое иллюзия<br>
+        2. почему она нужна психике<br>
+        3. как она поддерживает игру, творчество, надежду<br>
+        4. когда она превращается в защиту от реальности<br>
+        5. как отличить живую иллюзию от разрушительного самообмана
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Ставка вопроса: «и что из этого?»</p>
+    <p class="section-intro">Вопрос становится исследовательским не тогда, когда красиво звучит, а когда понятно, зачем его вообще задавать.</p>
+
+    <div class="case">
+      <div class="case-row"><span class="label">Тема</span><span class="val">иллюзия и искусство</span></div>
+      <div class="case-row"><span class="label">Вопрос</span><span class="val quote">Почему зритель хочет быть обманутым?</span></div>
+      <div class="case-row"><span class="label">Ставка</span><span class="val">это позволяет иначе думать об искусстве — не как об украшении, фальши или бегстве от реальности, а как о пространстве добровольной иллюзии, где человек может безопасно переживать невозможное</span></div>
+      <div class="case-row"><span class="label">Тезис</span><span class="val">художественная иллюзия не просто скрывает реальность, а создаёт промежуточную зону между знанием и верой, в которой становится возможным переживание</span></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Короткая формула</p>
+    <p class="section-intro">Связка слов — это ещё не тема. Тема появляется так:</p>
+
+    <div class="scheme">
+      <div class="scheme-bar" style="--w:34%; --c:var(--scheme-1);">первое слово</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:40%; --c:var(--scheme-2);">второе слово</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:100%; --c:var(--scheme-3);">десять вопросов</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:82%; --c:var(--scheme-4);">сортировка по типам</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:64%; --c:var(--scheme-5);">пять фильтров</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:46%; --c:var(--scheme-6);">ставка</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:58%; --c:var(--scheme-7);">исследовательский вопрос</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:70%; --c:var(--scheme-8);">источники</div>
+      <span class="scheme-arrow">▾</span>
+      <div class="scheme-bar" style="--w:38%; --c:var(--scheme-9);">текст</div>
+    </div>
+    <p class="scheme-caption">сначала расширение — от слов к десяти вопросам, затем сужение через фильтры и ставку, и снова небольшое расширение к источникам, пока всё не сходится в текст</p>
+
+    <div class="formula-final">Важно не искать тему, а ставить вопросы.</div>
+  </section>
+  <p style="margin:40px 0 0;">
+    <a href="tablitsa-slov.html" class="btn" style="display:inline-block; text-decoration:none;">Часть 2 · Из двух слов — тема →</a>
+  </p>
+
+  <footer>Раздатка к семинару · часть 1 из 2</footer>
+</div>
+</body>
+</html>
