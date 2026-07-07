@@ -49,7 +49,7 @@
   }
 
   .page{
-    max-width:640px;
+    max-width:780px;
     margin:0 auto;
     padding:0 20px 80px;
     position:relative;
@@ -433,21 +433,52 @@
   .chip.row-selected{ background:var(--teal); color:var(--paper); }
   .chip.col-selected{ background:var(--plum); color:var(--paper); }
 
+  /* ---------- word wall (same format as the library) ---------- */
+  .word-wall{
+    line-height:1.5;
+    margin:0 0 8px;
+  }
+  .word-chip{
+    display:inline;
+    cursor:pointer;
+    white-space:nowrap;
+    font-family:'Karla', sans-serif;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    font-size:1rem;
+    color:var(--ink);
+    transition:color .12s ease, background .12s ease;
+  }
+  .word-chip:not(.row-selected):not(.col-selected):hover{ color:var(--plum) !important; }
+  .word-chip.row-selected{ background:var(--teal); color:var(--paper); border-radius:3px; padding:0 3px; }
+  .word-chip.col-selected{ background:var(--plum); color:var(--paper); border-radius:3px; padding:0 3px; }
+  .word-chip:nth-of-type(7n+1){ color:var(--dusty); }
+  .word-chip:nth-of-type(7n+2){ color:var(--bluebell); }
+  .word-chip:nth-of-type(7n+3){ color:var(--teal-ink); }
+  .word-chip:nth-of-type(7n+4){ color:var(--sage); }
+  .word-chip:nth-of-type(7n+5){ color:var(--rose-ink); }
+  .word-chip:nth-of-type(7n+6){ color:var(--lavender); }
+  .word-chip:nth-of-type(7n+7){ color:var(--plum); }
+
   .grid-wrap{
     max-width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch;
     margin:18px 0 6px;
   }
-  .grid-table{ border-collapse:separate; border-spacing:4px; }
-  .grid-table .corner{ width:64px; }
+  .grid-table{
+    width:100%;
+    table-layout:fixed;
+    border-collapse:separate;
+    border-spacing:7px;
+  }
+  .grid-table .corner{ width:78px; }
   .col-head, .row-head{
     font-family:'JetBrains Mono', monospace;
-    font-size:9.5px;
+    font-size:10.5px;
     font-weight:500;
     text-transform:uppercase;
     letter-spacing:0.02em;
-    border-radius:5px;
+    border-radius:6px;
   }
   .col-head{
     color:var(--plum);
@@ -455,16 +486,15 @@
     writing-mode:vertical-rl;
     transform:rotate(180deg);
     white-space:nowrap;
-    height:88px;
-    padding:6px 3px;
+    padding:8px 4px;
     vertical-align:bottom;
   }
   .row-head{
     color:var(--teal-ink);
     background:rgba(110,156,147,0.12);
     text-align:left;
-    width:64px;
-    padding:5px 6px;
+    width:78px;
+    padding:7px 8px;
     white-space:normal;
     word-break:break-word;
     line-height:1.15;
@@ -472,13 +502,13 @@
   }
   .cell-btn{
     width:100%;
-    min-width:38px;
-    height:38px;
-    border-radius:7px;
+    aspect-ratio:1 / 1;
+    min-height:36px;
+    border-radius:8px;
     border:1px dashed var(--line);
     background:var(--mist);
     color:var(--ink-soft);
-    font-size:13px;
+    font-size:17px;
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
   }
@@ -520,30 +550,16 @@
     <p class="eyebrow">Раздатка · часть 3</p>
     <h1>Брейн-шторм</h1>
     <p class="lede">Библиотека из 206 слов — это не тема сама по себе, а сырьё. Выбираешь слова, часть уходит в строки, часть — в столбцы, а дальше просто тыкаешь в любую клетку.</p>
-    <p style="margin-top:22px; display:flex; gap:10px; flex-wrap:wrap;">
-      <a href="issledovatelskiy-vopros.html" class="btn" style="display:inline-block; text-decoration:none;">← Часть 2 · Исследовательские вопросы</a>
-      <a href="kak-iskat-istochniki.html" class="btn" style="display:inline-block; text-decoration:none;">Часть 4 · Как искать источники →</a>
-    </p>
   </section>
 
   <section>
     <p class="section-intro">Тапни по словам ниже, чтобы добавить их в таблицу, или впиши своё слово вручную — например, если нашёл его в библиотеке возможных тем. Первая половина выбранных уйдёт в строки (бирюзовым), вторая — в столбцы (пламовым). Можно взять любое количество слов — для начала хватит 8–10.</p>
 
-    <div class="bank-controls">
-      <button class="btn" id="randomBtn" type="button">Случайные 10</button>
-      <button class="btn" id="resetBtn" type="button">Сбросить</button>
-    </div>
-
-    <div class="bank-controls" style="margin-top:0;">
-      <input type="text" id="customWordInput" placeholder="своё слово…" style="font-family:'Karla',sans-serif; font-size:0.92rem; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); flex:1; min-width:140px;">
-      <button class="btn" id="addWordBtn" type="button">Добавить</button>
-    </div>
-
     <p class="bank-status" id="bankStatus">Выбрано: 0</p>
     <div class="bank" id="selectedList"></div>
 
     <p class="section-label" style="margin-top:30px;">Банк слов</p>
-    <div class="bank" id="wordBank"></div>
+    <div class="word-wall" id="wordBank"></div>
 
     <div id="gridSection" style="display:none;">
       <p class="section-label" style="margin-top:36px;">Таблица</p>
@@ -555,7 +571,22 @@
         <div class="pair" id="pairText"></div>
       </div>
     </div>
+
+    <div class="bank-controls" style="margin-top:28px;">
+      <button class="btn" id="randomBtn" type="button">Случайные 10</button>
+      <button class="btn" id="resetBtn" type="button">Сбросить</button>
+    </div>
+
+    <div class="bank-controls" style="margin-top:0;">
+      <input type="text" id="customWordInput" placeholder="своё слово…" style="font-family:'Karla',sans-serif; font-size:0.92rem; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:var(--paper); color:var(--ink); flex:1; min-width:140px;">
+      <button class="btn" id="addWordBtn" type="button">Добавить</button>
+    </div>
   </section>
+
+  <p style="margin:40px 0 0; display:flex; gap:10px; flex-wrap:wrap;">
+    <a href="issledovatelskiy-vopros.html" class="btn" style="display:inline-block; text-decoration:none;">← Часть 2 · Исследовательские вопросы</a>
+    <a href="kak-iskat-istochniki.html" class="btn" style="display:inline-block; text-decoration:none;">Часть 4 · Как искать источники →</a>
+  </p>
 
   <footer>Раздатка к семинару · часть 3 из 4</footer>
 </div>
@@ -577,14 +608,17 @@
   function renderBank(){
     bankEl.innerHTML = '';
     var half = Math.ceil(selected.length / 2);
+    var frag = document.createDocumentFragment();
     WORDS.forEach(function(w){
       var chip = document.createElement('span');
       var idx = selected.indexOf(w);
-      chip.className = 'chip' + (idx === -1 ? '' : (idx < half ? ' row-selected' : ' col-selected'));
+      chip.className = 'word-chip' + (idx === -1 ? '' : (idx < half ? ' row-selected' : ' col-selected'));
       chip.textContent = w;
       chip.addEventListener('click', function(){ toggleWord(w); });
-      bankEl.appendChild(chip);
+      frag.appendChild(chip);
+      frag.appendChild(document.createTextNode(' '));
     });
+    bankEl.appendChild(frag);
     renderSelectedList();
     statusEl.textContent = 'Выбрано: ' + selected.length;
   }
