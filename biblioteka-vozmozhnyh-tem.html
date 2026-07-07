@@ -33,6 +33,19 @@
     font-family: 'Karla', system-ui, sans-serif;
     min-height: 100vh;
   }
+  .home-link {
+    display: inline-block;
+    margin: 24px 0 0 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-dim);
+  }
+  .home-link:before { content: "← "; }
+  .home-link:hover { color: var(--accent); }
   .intro {
     text-align: center;
     padding: 48px 24px 12px;
@@ -315,6 +328,8 @@
   }
 </style>
 <body>
+
+<a href="index.html" class="home-link">На главную</a>
 
 <div class="intro">
   <h1>Библиотека возможных тем</h1>
