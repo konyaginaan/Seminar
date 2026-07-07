@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как искать источники</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mist:#F2EFEC;
+    --paper:#FAF8F6;
+    --ink:#2B2733;
+    --ink-soft:#453F4C;
+    --rose:#C98D93;
+    --rose-ink:#9C5D66;
+    --mauve:#9C7C8C;
+    --lavender:#9B8FB0;
+    --bluebell:#7C93B0;
+    --teal:#6E9C93;
+    --teal-ink:#4C766D;
+    --sage:#8FA37E;
+    --plum:#6B4F6B;
+    --dusty:#B0A18F;
+    --line:rgba(43,39,51,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+
+  body{
+    margin:0;
+    background:var(--mist);
+    color:var(--ink);
+    font-family:'Karla', system-ui, sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .page{
+    max-width:640px;
+    margin:0 auto;
+    padding:0 20px 80px;
+    position:relative;
+  }
+
+  .thread{
+    position:absolute;
+    left:6px;
+    top:0;
+    bottom:0;
+    width:3px;
+    border-radius:3px;
+    background:linear-gradient(
+      to bottom,
+      var(--dusty) 0%,
+      var(--bluebell) 14%,
+      var(--teal) 28%,
+      var(--sage) 42%,
+      var(--rose) 56%,
+      var(--lavender) 70%,
+      var(--plum) 84%,
+      var(--plum) 100%
+    );
+    opacity:0.55;
+  }
+  @media (max-width:480px){ .thread{ display:none; } }
+
+  .hero{
+    padding:56px 0 28px;
+    text-align:left;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:2.5rem;
+    line-height:1.15;
+    margin:0 0 18px;
+    background:linear-gradient(100deg, var(--plum) 0%, var(--rose-ink) 45%, var(--teal-ink) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--plum);
+  }
+  .hero p.lede{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:52ch;
+  }
+
+  .section-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:52px 0 10px;
+  }
+  .section-intro{
+    font-size:0.98rem;
+    color:var(--ink-soft);
+    margin:0 0 22px;
+  }
+
+  /* ---------- route (рабочий маршрут) ---------- */
+  .route{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .route-step{
+    display:flex;
+    gap:16px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+  }
+  .route-num{
+    flex:none;
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--paper);
+    background:var(--dusty);
+  }
+  .route-step:nth-child(1) .route-num{ background:var(--dusty); }
+  .route-step:nth-child(2) .route-num{ background:var(--bluebell); }
+  .route-step:nth-child(3) .route-num{ background:var(--teal); }
+  .route-step:nth-child(4) .route-num{ background:var(--sage); }
+  .route-step:nth-child(5) .route-num{ background:var(--rose); }
+  .route-title{
+    font-weight:600;
+    color:var(--ink);
+    margin:2px 0 6px;
+  }
+  .route-example{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--plum);
+    margin:0;
+  }
+  .route-body p{
+    margin:0 0 6px;
+    font-size:0.98rem;
+    color:var(--ink-soft);
+  }
+  .route-body p:last-child{ margin-bottom:0; }
+
+  /* ---------- quote card (письмо автору) ---------- */
+  .quote-card{
+    margin-top:18px;
+    padding:18px 20px;
+    background:var(--paper);
+    border-left:3px solid var(--plum);
+    border-radius:2px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--plum);
+    line-height:1.55;
+  }
+
+  /* ---------- resources ---------- */
+  .resource-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .resource{
+    display:block;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px 18px;
+    text-decoration:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .resource:hover{ box-shadow:0 2px 14px rgba(43,39,51,0.08); }
+  .resource-name{
+    display:block;
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    font-size:1.18rem;
+    margin-bottom:4px;
+  }
+  .resource-desc{
+    display:block;
+    font-size:0.94rem;
+    color:var(--ink-soft);
+    line-height:1.55;
+  }
+  .resource:nth-of-type(7n+1){ border-color:var(--line); }
+  .resource:nth-of-type(7n+1) .resource-name{ color:var(--dusty); }
+  .resource:nth-of-type(7n+1):hover{ border-color:var(--dusty); }
+  .resource:nth-of-type(7n+2) .resource-name{ color:var(--bluebell); }
+  .resource:nth-of-type(7n+2):hover{ border-color:var(--bluebell); }
+  .resource:nth-of-type(7n+3) .resource-name{ color:var(--teal-ink); }
+  .resource:nth-of-type(7n+3):hover{ border-color:var(--teal); }
+  .resource:nth-of-type(7n+4) .resource-name{ color:var(--sage); }
+  .resource:nth-of-type(7n+4):hover{ border-color:var(--sage); }
+  .resource:nth-of-type(7n+5) .resource-name{ color:var(--rose-ink); }
+  .resource:nth-of-type(7n+5):hover{ border-color:var(--rose); }
+  .resource:nth-of-type(7n+6) .resource-name{ color:var(--lavender); }
+  .resource:nth-of-type(7n+6):hover{ border-color:var(--lavender); }
+  .resource:nth-of-type(7n+7) .resource-name{ color:var(--plum); }
+  .resource:nth-of-type(7n+7):hover{ border-color:var(--plum); }
+
+  .resource-plain{
+    background:var(--mist);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px 18px;
+  }
+  .resource-plain .resource-name{ color:var(--ink-soft); }
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="thread"></div>
+
+  <section class="hero">
+    <p class="eyebrow">Раздатка · источники</p>
+    <h1>Как искать источники</h1>
+    <p class="lede">Ищите не сразу «правильный текст», а следы: ключевые слова, авторов, понятия, похожие вопросы, споры вокруг темы.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Рабочий маршрут</p>
+    <div class="route">
+
+      <div class="route-step">
+        <span class="route-num">1</span>
+        <div class="route-body">
+          <p class="route-title">Сформулируйте вопрос простыми словами</p>
+          <p class="route-example">Например: «что делает иллюзия для психики?»</p>
+        </div>
+      </div>
+
+      <div class="route-step">
+        <span class="route-num">2</span>
+        <div class="route-body">
+          <p class="route-title">Попросите ИИ помочь не с ответом, а с поиском</p>
+          <p class="route-example">«Подбери ключевые слова, авторов и направления, по которым можно искать источники к вопросу…»</p>
+        </div>
+      </div>
+
+      <div class="route-step">
+        <span class="route-num">3</span>
+        <div class="route-body">
+          <p>Ищите не только статьи, но и книги, главы, обзоры, классические тексты, словарные статьи, интервью, клинические случаи, полемику.</p>
+        </div>
+      </div>
+
+      <div class="route-step">
+        <span class="route-num">4</span>
+        <div class="route-body">
+          <p>Проверяйте источник: кто автор, где опубликовано, какого года текст, это первичный текст или пересказ, есть ли ссылки на другие работы.</p>
+        </div>
+      </div>
+
+      <div class="route-step">
+        <span class="route-num">5</span>
+        <div class="route-body">
+          <p>Если текст закрыт, попробуйте написать автору напрямую. Очень часто исследователи спокойно присылают PDF своей статьи, если им написать короткое письмо на почту или в ResearchGate.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="section-intro" style="margin-top:22px;">Можно так:</p>
+    <div class="quote-card">Здравствуйте! Я исследую тему … и нашла вашу статью …. К сожалению, у меня нет доступа к полному тексту. Не могли бы вы прислать PDF, если это возможно? Буду очень благодарна.</div>
+  </section>
+
+  <section>
+    <p class="section-label">Где искать без VPN</p>
+    <div class="resource-list">
+
+      <a class="resource" href="https://scholar.google.com/" target="_blank" rel="noopener">
+        <span class="resource-name">Google Scholar</span>
+        <span class="resource-desc">Самый простой старт для научных статей и книг. Ищите по английским ключевым словам, автору или точной фразе.</span>
+      </a>
+
+      <a class="resource" href="https://www.semanticscholar.org/" target="_blank" rel="noopener">
+        <span class="resource-name">Semantic Scholar</span>
+        <span class="resource-desc">Хорош для научных статей: показывает похожие работы, цитирования и связи между текстами.</span>
+      </a>
+
+      <a class="resource" href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">
+        <span class="resource-name">PubMed</span>
+        <span class="resource-desc">Если тема связана с психологией, психиатрией, медициной, нейронауками. Часто есть ссылки на полный текст.</span>
+      </a>
+
+      <a class="resource" href="https://core.ac.uk/" target="_blank" rel="noopener">
+        <span class="resource-name">CORE</span>
+        <span class="resource-desc">Ищет статьи в открытом доступе по университетским репозиториям. Хороший способ найти PDF легально.</span>
+      </a>
+
+      <a class="resource" href="https://doaj.org/" target="_blank" rel="noopener">
+        <span class="resource-name">DOAJ</span>
+        <span class="resource-desc">Каталог журналов открытого доступа. Полезно, если хочется найти статьи, которые точно можно читать бесплатно.</span>
+      </a>
+
+      <a class="resource" href="https://openalex.org/" target="_blank" rel="noopener">
+        <span class="resource-name">OpenAlex</span>
+        <span class="resource-desc">Большая открытая база научных работ, авторов, журналов и тем. Удобно смотреть карту поля: кто пишет о теме и какие тексты часто цитируют.</span>
+      </a>
+
+      <a class="resource" href="https://cyberleninka.ru/" target="_blank" rel="noopener">
+        <span class="resource-name">КиберЛенинка</span>
+        <span class="resource-desc">Русскоязычные научные статьи в открытом доступе.</span>
+      </a>
+
+      <a class="resource" href="https://elibrary.ru/" target="_blank" rel="noopener">
+        <span class="resource-name">eLIBRARY</span>
+        <span class="resource-desc">Большая русскоязычная научная база. Иногда нужна регистрация, не все тексты открыты.</span>
+      </a>
+
+      <a class="resource" href="https://www.perplexity.ai/" target="_blank" rel="noopener">
+        <span class="resource-name">Perplexity</span>
+        <span class="resource-desc">Удобен для первичной разведки: задаёте вопрос, он даёт краткий обзор и ссылки. Важно: не верить ответу сразу, а открывать источники.</span>
+      </a>
+
+      <a class="resource" href="https://www.researchgate.net/" target="_blank" rel="noopener">
+        <span class="resource-name">ResearchGate</span>
+        <span class="resource-desc">Можно искать статьи и авторов. Если текст закрыт, часто можно запросить PDF у автора.</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Может понадобиться VPN</p>
+    <div class="resource-list">
+
+      <a class="resource" href="https://chatgpt.com/" target="_blank" rel="noopener">
+        <span class="resource-name">ChatGPT</span>
+        <span class="resource-desc">Хорош для формулировки запроса, подбора ключевых слов, объяснения сложного текста, составления плана чтения. Но ссылки и факты лучше перепроверять.</span>
+      </a>
+
+      <a class="resource" href="https://claude.ai/" target="_blank" rel="noopener">
+        <span class="resource-name">Claude</span>
+        <span class="resource-desc">Удобен для длинных текстов: можно дать статью или главу и попросить выделить аргументы, понятия, цитаты, спорные места.</span>
+      </a>
+
+      <a class="resource" href="https://scite.ai/" target="_blank" rel="noopener">
+        <span class="resource-name">Scite</span>
+        <span class="resource-desc">Научный ИИ-поиск: помогает понять, поддерживают или оспаривают статью другие исследования. Особенно полезен, когда нужно понять место источника в дискуссии.</span>
+      </a>
+
+      <a class="resource" href="https://archive.org/" target="_blank" rel="noopener">
+        <span class="resource-name">Internet Archive</span>
+        <span class="resource-desc">Полезен для старых книг, архивов, сканов, редких изданий.</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Если текст всё ещё закрыт</p>
+    <p class="section-intro">Есть теневые библиотеки и поисковики по ним. Домены часто меняются, поэтому лучше искать актуальный адрес по названию сервиса.</p>
+    <div class="resource-list">
+
+      <div class="resource-plain">
+        <span class="resource-name">Sci-Hub</span>
+        <span class="resource-desc">Для статей по DOI, названию или ссылке на публикацию.</span>
+      </div>
+
+      <div class="resource-plain">
+        <span class="resource-name">Anna's Archive</span>
+        <span class="resource-desc">Поиск по книгам, статьям, ISBN, авторам и названиям.</span>
+      </div>
+
+      <div class="resource-plain">
+        <span class="resource-name">Library Genesis / LibGen</span>
+        <span class="resource-desc">Чаще всего полезен для книг, сборников и учебников. Искать можно по названию, автору или ISBN.</span>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>Раздатка к семинару · как искать источники</footer>
+</div>
+</body>
+</html>
