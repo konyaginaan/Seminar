@@ -87,8 +87,16 @@
 
   /* ---------- home link ---------- */
   .home-link{
-    display:inline-block;
-    margin:24px 0 0;
+    position:fixed;
+    top:16px;
+    left:16px;
+    z-index:50;
+    display:inline-flex;
+    align-items:center;
+    padding:9px 14px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:20px;
     font-family:'JetBrains Mono', monospace;
     font-size:12px;
     font-weight:500;
@@ -96,9 +104,11 @@
     text-transform:uppercase;
     text-decoration:none;
     color:var(--ink-soft);
+    box-shadow:0 4px 14px rgba(43,39,51,0.12);
+    transition:color .2s ease, border-color .2s ease;
   }
-  .home-link:before{ content:"← "; }
-  .home-link:hover{ color:var(--plum); }
+  .home-link:before{ content:"←"; margin-right:6px; }
+  .home-link:hover{ color:var(--plum); border-color:var(--plum); }
 
   /* ---------- hero ---------- */
   .hero{
