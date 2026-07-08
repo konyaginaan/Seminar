@@ -6,7 +6,7 @@
 <title>Исследовательские вопросы</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --mist:#F2EFEC;
@@ -503,6 +503,68 @@
     font-style:italic;
     opacity:0.88;
   }
+
+  /* ---------- random question dice ---------- */
+  .dice-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:54px;
+    height:54px;
+    border-radius:14px;
+    background:var(--plum);
+    color:var(--paper);
+    border:none;
+    font-size:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(43,39,51,0.28);
+    z-index:300;
+    transition:transform .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .dice-btn:active{ transform:scale(0.92); }
+  #qOverlay{
+    position:fixed;
+    inset:0;
+    z-index:299;
+    display:none;
+  }
+  #qOverlay.open{ display:block; }
+  #qPopup{
+    position:fixed;
+    right:20px;
+    bottom:86px;
+    max-width:300px;
+    background:var(--plum);
+    color:var(--paper);
+    padding:20px 22px;
+    border-radius:14px 14px 2px 14px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.1rem;
+    line-height:1.4;
+    box-shadow:0 20px 60px rgba(43,39,51,0.3);
+    cursor:pointer;
+    z-index:301;
+  }
+  #qPopup .q-hint{
+    display:block;
+    margin-top:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-style:normal;
+    font-weight:500;
+    font-size:10.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+  @media (max-width:480px){
+    #qPopup{ right:16px; left:16px; max-width:none; bottom:84px; }
+  }
 </style>
 <body>
 <div class="page">
@@ -666,7 +728,7 @@
   </section>
 
   <section>
-    <p class="section-label">Ставка вопроса: «и что из этого?»</p>
+    <p class="section-label">Ставка вопроса: <strong>«и что из этого?»</strong></p>
     <p class="section-intro">Вопрос становится исследовательским не тогда, когда красиво звучит, а когда понятно, зачем его вообще задавать.</p>
 
     <div class="case">
@@ -711,5 +773,60 @@
 
   <footer>Раздатка к семинару · часть 2 из 4</footer>
 </div>
+
+<button class="dice-btn" id="diceBtn" type="button" aria-label="Случайный вопрос">🎲</button>
+<div id="qOverlay">
+  <div id="qPopup"></div>
+</div>
+
+<script>
+(function(){
+  var QUESTIONS = [
+    "Что такое иллюзия у Фрейда?",
+    "Чем иллюзия отличается от фантазии, ошибки, веры и самообмана?",
+    "Что делает иллюзия для психики?",
+    "Как возникает иллюзия?",
+    "Почему иллюзия не всегда является ошибкой?",
+    "Почему современная культура производит всё больше правдоподобных иллюзий?",
+    "Когда иллюзия поддерживает жизнь, а когда становится защитой от реальности?",
+    "Почему у Винникотта иллюзия становится условием творчества, а не ошибкой восприятия?",
+    "Почему зритель хочет быть обманутым, хотя знает, что перед ним искусственная сцена?",
+    "Как психоанализ и теория искусства объясняют удовольствие от добровольного обмана?",
+    "В каких случаях иллюзия поддерживает психику, а в каких мешает встрече с реальностью?"
+  ];
+  var diceBtn = document.getElementById('diceBtn');
+  var qOverlay = document.getElementById('qOverlay');
+  var qPopup = document.getElementById('qPopup');
+  var lastIndex = -1;
+
+  function pickQuestion(){
+    if(QUESTIONS.length === 1) return QUESTIONS[0];
+    var i;
+    do{ i = Math.floor(Math.random() * QUESTIONS.length); } while(i === lastIndex);
+    lastIndex = i;
+    return QUESTIONS[i];
+  }
+
+  function renderQuestion(){
+    qPopup.innerHTML = pickQuestion() + '<span class="q-hint">Пример вопроса · тапните ещё раз</span>';
+  }
+
+  diceBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    renderQuestion();
+    qOverlay.classList.add('open');
+  });
+  qPopup.addEventListener('click', function(e){
+    e.stopPropagation();
+    renderQuestion();
+  });
+  qOverlay.addEventListener('click', function(){
+    qOverlay.classList.remove('open');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') qOverlay.classList.remove('open');
+  });
+})();
+</script>
 </body>
 </html>

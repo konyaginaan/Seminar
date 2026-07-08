@@ -33,6 +33,13 @@
     --scheme-8:#483639;
     --scheme-9:#3D2C2F;
     --line:rgba(43,39,51,0.12);
+    --wc-1:#A3835C;
+    --wc-2:#7DA35C;
+    --wc-3:#5CA395;
+    --wc-4:#5C7CA3;
+    --wc-5:#765CA3;
+    --wc-6:#A35CA3;
+    --wc-7:#A35C63;
   }
 
   *{box-sizing:border-box;}
@@ -453,13 +460,13 @@
   .word-chip:not(.row-selected):not(.col-selected):hover{ color:var(--plum) !important; }
   .word-chip.row-selected{ background:var(--teal); color:var(--paper); border-radius:3px; padding:0 3px; }
   .word-chip.col-selected{ background:var(--plum); color:var(--paper); border-radius:3px; padding:0 3px; }
-  .word-chip:nth-of-type(7n+1){ color:var(--dusty); }
-  .word-chip:nth-of-type(7n+2){ color:var(--bluebell); }
-  .word-chip:nth-of-type(7n+3){ color:var(--teal-ink); }
-  .word-chip:nth-of-type(7n+4){ color:var(--sage); }
-  .word-chip:nth-of-type(7n+5){ color:var(--rose-ink); }
-  .word-chip:nth-of-type(7n+6){ color:var(--lavender); }
-  .word-chip:nth-of-type(7n+7){ color:var(--plum); }
+  .word-chip:nth-of-type(7n+1){ color:var(--wc-1); }
+  .word-chip:nth-of-type(7n+2){ color:var(--wc-2); }
+  .word-chip:nth-of-type(7n+3){ color:var(--wc-3); }
+  .word-chip:nth-of-type(7n+4){ color:var(--wc-4); }
+  .word-chip:nth-of-type(7n+5){ color:var(--wc-5); }
+  .word-chip:nth-of-type(7n+6){ color:var(--wc-6); }
+  .word-chip:nth-of-type(7n+7){ color:var(--wc-7); }
 
   .grid-wrap{
     max-width:100%;
@@ -472,14 +479,15 @@
     border-spacing:6px;
     margin:0 auto;
   }
-  .grid-table .corner{ width:60px; }
+  .grid-table .corner{ width:88px; }
   .col-head, .row-head{
     font-family:'JetBrains Mono', monospace;
-    font-size:10px;
+    font-size:9.5px;
     font-weight:500;
     text-transform:uppercase;
-    letter-spacing:0.02em;
+    letter-spacing:0.01em;
     border-radius:6px;
+    overflow-wrap:break-word;
   }
   .col-head{
     color:var(--plum);
@@ -494,29 +502,31 @@
     color:var(--teal-ink);
     background:rgba(110,156,147,0.12);
     text-align:left;
-    width:60px;
-    padding:6px 7px;
+    width:88px;
+    padding:6px 8px;
     white-space:normal;
-    word-break:break-word;
-    line-height:1.15;
+    word-break:normal;
+    overflow-wrap:break-word;
+    line-height:1.25;
     vertical-align:middle;
   }
   .cell-btn{
-    width:42px;
-    height:42px;
+    width:38px;
+    height:38px;
     border-radius:8px;
     border:1px dashed var(--line);
     background:var(--mist);
     color:var(--ink-soft);
-    font-size:14px;
+    font-size:13px;
     cursor:pointer;
     -webkit-tap-highlight-color:transparent;
   }
   .cell-btn:active{ background:var(--sage); border-color:var(--sage); color:var(--paper); }
   @media (min-width:560px){
-    .grid-table .corner{ width:72px; }
-    .row-head{ width:72px; padding:7px 8px; font-size:10.5px; }
-    .cell-btn{ width:50px; height:50px; font-size:15px; }
+    .grid-table .corner{ width:112px; }
+    .row-head{ width:112px; padding:7px 10px; font-size:10.5px; }
+    .col-head{ font-size:10.5px; }
+    .cell-btn{ width:48px; height:48px; font-size:15px; }
   }
 
   .pair-result{
@@ -532,17 +542,202 @@
     font-weight:600;
     font-size:1.55rem;
   }
-  .pair-result .pair a{
+  .pair-result .pair .word-link{
     color:var(--paper);
     text-decoration:none;
+    cursor:pointer;
     border-bottom:1px dotted rgba(250,248,246,0.5);
   }
-  .pair-result .pair a:hover{ border-bottom-style:solid; }
+  .pair-result .pair .word-link:hover{ border-bottom-style:solid; }
   .pair-result .nudge{
     margin-top:10px;
     font-size:0.9rem;
     font-style:italic;
     opacity:0.88;
+  }
+
+  /* ---------- word source modal (same cards as the library) ---------- */
+  #overlay{
+    position:fixed; inset:0;
+    background:rgba(43,39,51,0.45);
+    backdrop-filter:blur(6px);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    z-index:200;
+    overflow-y:auto;
+    padding:6vh 16px;
+  }
+  #overlay.open{ display:flex; }
+  #panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    max-width:640px;
+    width:100%;
+    padding:36px 32px 44px;
+    box-shadow:0 30px 90px rgba(43,39,51,0.18);
+    animation:rise .3s ease;
+    position:relative;
+  }
+  @keyframes rise{ from{ transform:translateY(20px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+  #panel h2{
+    font-family:'Cormorant Garamond', serif;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--plum);
+    font-size:1.6rem;
+    font-weight:600;
+    margin:0 0 6px;
+    text-align:center;
+  }
+  .panel-close{
+    position:sticky;
+    top:0;
+    float:right;
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    width:32px; height:32px;
+    border-radius:50%;
+    font-size:17px;
+    cursor:pointer;
+    line-height:1;
+  }
+  .panel-close:hover{ color:var(--plum); border-color:var(--plum); }
+  #panel-body .hint{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12px;
+    letter-spacing:0.06em;
+    margin-top:-6px;
+    margin-bottom:18px;
+    text-transform:uppercase;
+  }
+  #domain-list{ list-style:none; margin:0; padding:0; }
+  #domain-list li{
+    border-top:1px solid var(--line);
+    padding:14px 4px;
+    cursor:pointer;
+    font-size:0.98rem;
+    color:var(--ink);
+    transition:color .15s ease, padding-left .15s ease;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  #domain-list li:first-child{ border-top:none; }
+  #domain-list li:hover{ color:var(--plum); padding-left:8px; }
+  #domain-list li .dname{ text-transform:uppercase; letter-spacing:0.04em; }
+  #domain-list li .arrow{ color:var(--teal-ink); font-size:14px; }
+  .word-back-btn{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    cursor:pointer;
+    margin-bottom:16px;
+    padding:0;
+  }
+  .word-back-btn:hover{ color:var(--plum); }
+  .word-back-btn:before{ content:"← "; }
+  .source-card{ border-top:1px solid var(--line); padding:20px 0; }
+  .source-card.first{ border-top:none; padding-top:0; }
+  .source-card .domain{
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:10.5px;
+    color:var(--teal-ink);
+    margin-bottom:6px;
+  }
+  .source-card .material{ font-size:0.98rem; color:var(--ink); margin-bottom:2px; font-weight:600; }
+  .source-card .type{ font-size:0.82rem; color:var(--ink-soft); font-style:italic; margin-bottom:10px; }
+  .source-card .about, .source-card .connection{
+    font-size:0.92rem;
+    line-height:1.6;
+    color:var(--ink);
+    margin-bottom:8px;
+    white-space:pre-line;
+  }
+  .source-card .connection{ color:var(--ink-soft); }
+  .source-card .question{
+    font-size:0.9rem;
+    font-style:italic;
+    color:var(--plum);
+    margin-top:8px;
+    padding-left:12px;
+    border-left:2px solid var(--teal-ink);
+  }
+  .source-card a{
+    color:var(--plum);
+    font-size:0.82rem;
+    text-decoration:none;
+    border-bottom:1px dotted var(--teal-ink);
+  }
+  .source-card a:hover{ border-bottom-style:solid; }
+
+  /* ---------- random question dice ---------- */
+  .dice-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:54px;
+    height:54px;
+    border-radius:14px;
+    background:var(--plum);
+    color:var(--paper);
+    border:none;
+    font-size:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(43,39,51,0.28);
+    z-index:300;
+    transition:transform .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .dice-btn:active{ transform:scale(0.92); }
+  #qOverlay{
+    position:fixed;
+    inset:0;
+    z-index:299;
+    display:none;
+  }
+  #qOverlay.open{ display:block; }
+  #qPopup{
+    position:fixed;
+    right:20px;
+    bottom:86px;
+    max-width:300px;
+    background:var(--plum);
+    color:var(--paper);
+    padding:20px 22px;
+    border-radius:14px 14px 2px 14px;
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:1.1rem;
+    line-height:1.4;
+    box-shadow:0 20px 60px rgba(43,39,51,0.3);
+    cursor:pointer;
+    z-index:301;
+  }
+  #qPopup .q-hint{
+    display:block;
+    margin-top:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-style:normal;
+    font-weight:500;
+    font-size:10.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+  @media (max-width:480px){
+    #qPopup{ right:16px; left:16px; max-width:none; bottom:84px; }
   }
 </style>
 <body>
@@ -554,11 +749,11 @@
   <section class="hero">
     <p class="eyebrow">Раздатка · часть 3</p>
     <h1>Брейн-шторм</h1>
-    <p class="lede">Библиотека из 206 слов — это не тема сама по себе, а сырьё. Выбираешь слова, часть уходит в строки, часть — в столбцы, а дальше просто тыкаешь в любую клетку.</p>
+    <p class="lede">Библиотека из 206 слов — это не тема сама по себе, а сырьё для создания вашей темы. Нужно выбрать слова, часть из которых расположится в таблице в строках, а часть — в столбцах. Далее можно тапнуть в любую клетку, чтобы посмотреть, какие комбинации получились.</p>
   </section>
 
   <section>
-    <p class="section-intro">Тапни по словам ниже, чтобы добавить их в таблицу, или впиши своё слово вручную — например, если нашёл его в библиотеке возможных тем. Первая половина выбранных уйдёт в строки (бирюзовым), вторая — в столбцы (пламовым). Можно взять любое количество слов — для начала хватит 8–10.</p>
+    <p class="section-intro">Тапните по словам ниже, чтобы добавить их в таблицу, или впишите своё слово вручную. Такой брейн-шторм можно проводить как в команде, так и самостоятельно.</p>
 
     <p class="bank-status" id="bankStatus">Выбрано: 0</p>
     <div class="bank" id="selectedList"></div>
@@ -596,9 +791,22 @@
   <footer>Раздатка к семинару · часть 3 из 4</footer>
 </div>
 
+<div id="overlay">
+  <div id="panel">
+    <button class="panel-close" onclick="closeWordPanel()">&times;</button>
+    <div id="panel-body"></div>
+  </div>
+</div>
+
+<button class="dice-btn" id="diceBtn" type="button" aria-label="Случайный вопрос">🎲</button>
+<div id="qOverlay">
+  <div id="qPopup"></div>
+</div>
+
+<script src="biblioteka-data.js"></script>
 <script>
 (function(){
-  var WORDS = ["ДЕНЬ", "БУДУЩЕЕ", "ЧЕРНОВИК", "ПРИНЯТИЕ", "КАРНАВАЛ", "БАНАЛЬНОСТЬ", "КРАСОТА", "ГРЕХ", "ИДЕНТИЧНОСТЬ", "ПРОШЛОЕ", "ИСЦЕЛЕНИЕ", "НЕЗАВЕРШЕННОСТЬ", "ОСТАНОВКА", "УСТАЛОСТЬ", "ДЕНЬГИ", "СТЫДЛИВОСТЬ", "ПОВТОРЕНИЕ", "ЗАВИСИМОСТЬ", "ВЗГЛЯД", "ЦЕЛОСТНОСТЬ", "АГРЕССИЯ", "РАСПАД", "СМЕРТЬ", "ЖЕЛАНИЕ", "ПРИНАДЛЕЖНОСТЬ", "СОН", "СУД", "СОБЛАЗН", "ПРОФАННОСТЬ", "СУДЬБА", "АНГЕЛ", "НЕЖНОСТЬ", "РАНА", "МАТЬ", "ПЕРВЕРСИЯ", "СЕРДЦЕ", "НАСТОЯЩЕЕ", "СУБЛИМАЦИЯ", "Я", "БЕССОЗНАТЕЛЬНОЕ", "БОЛЬ", "ДЕПРЕССИЯ", "ЗАПРЕТ", "ЗАВИСТЬ", "ОБРАЗ", "ПАРАДОКС", "МЫСЛЬ", "СЕКСУАЛЬНОСТЬ", "НАПРЯЖЕНИЕ", "ЛОЖЬ", "КРОВЬ", "ВИНА", "РАЗРЫВ", "ОТЧАЯНИЕ", "АБСУРД", "ПОЛЕТ", "БЛИЗОСТЬ", "ПОСТУПОК", "РАСЩЕПЛЕНИЕ", "ПОРОГ", "ВОСПРИЯТИЕ", "РЕАЛЬНОСТЬ", "ШЁПОТ", "ПОЗИЦИЯ", "СВИДЕТЕЛЬСТВО", "СТЕНА", "ДВИЖЕНИЕ", "СИМВОЛ", "ПРОРОЧЕСТВО", "ПРОЕКЦИЯ", "САМОСТОЯТЕЛЬНОСТЬ", "ПЕРЕЕЗД", "ОДИНОЧЕСТВО", "ПРОСТРАНСТВО", "ВНУТРЕННОСТИ", "ВЕРА", "ТВОРЧЕСТВО", "САМОЗВАНСТВО", "РЕПАРАЦИЯ", "КРИК", "ПАУЗА", "ПРИСУТСТВИЕ", "ЗАКОН", "ПЕРЕНОС", "СОЗНАНИЕ", "ИНСТИНКТ", "САКРАЛЬНОСТЬ", "СВЕТ", "ПУСТОТА", "ПРИЗНАНИЕ", "СЕМЬЯ", "САМООПРЕДЕЛЕНИЕ", "ДВОЙНИК", "ТЕЛО", "СЦЕНА", "НЕПОДВИЖНОСТЬ", "СУИЦИД", "КОНФЛИКТ", "НЕСОВЕРШЕНСТВО", "СОЦИАЛЬНОСТЬ", "ПРАВДА", "СЛУЧАЙ", "МАСКА", "ГНЕВ", "УЯЗВИМОСТЬ", "ПРОБУЖДЕНИЕ", "ИГРА", "СОЦСЕТИ", "ПЕРВИЧНОСТЬ", "АРХЕТИП", "ПЕРЕЖИВАНИЕ", "ГРАНИЦА", "ХАРАКТЕР", "ПАМЯТЬ", "ПАДЕНИЕ", "СУБЪЕКТНОСТЬ", "РАССТАВАНИЕ", "СОСТОЯНИЕ", "ЭНЕРГИЯ", "СЛАБОСТЬ", "СЛЕД", "НЕЗНАНИЕ", "ПРИВЯЗАННОСТЬ", "ДЕВСТВЕННОСТЬ", "ЗАЩИТА", "РОД", "СТЫД", "ЧИТАТЕЛЬ", "ЗАБЫВАНИЕ", "ВЛЕЧЕНИЕ", "ЛИБИДО", "ИЛЛЮЗИЯ", "ОТВЕРЖЕНИЕ", "ОТПЕЧАТОК", "ДЫХАНИЕ", "ОТКАЗ", "ПРЕДАТЕЛЬСТВО", "СОПРОТИВЛЕНИЕ", "СМЫСЛ", "ГИПНОЗ", "ТЕМНОТА", "УВЕРЕННОСТЬ", "МИФ", "ИСКУШЕНИЕ", "СИЛА", "ВЛАСТЬ", "ЗНАНИЕ", "САМОСТЬ", "ОТЕЦ", "МНЕНИЕ", "РОДИНА", "ВООБРАЖЕНИЕ", "ОШИБКА", "ДВЕРЬ", "РЕБЕНОК", "ПРЕСЛЕДОВАНИЕ", "БОЛЕЗНЬ", "ЛАБИРИНТ", "ТЕКСТ", "ОСОЗНАНИЕ", "ОТВРАЩЕНИЕ", "ВЫСКАЗЫВАНИЕ", "ОЩУЩЕНИЕ", "ТИШИНА", "ХАОС", "ОКНО", "ТЕМПЕРАМЕНТ", "ДЕТСТВО", "ФАНТАЗИЯ", "ОРАКУЛ", "ТРЕВОГА", "ДОМ", "АВТОРСТВО", "МАНИЯ", "СВОБОДА", "ПОТЕРЯ", "ИНТРОЕКЦИЯ", "ПЕРЕХОД", "УТРАТА", "СОМНЕНИЕ", "ЗРИТЕЛЬ", "САМОВЫРАЖЕНИЕ", "ЭЙФОРИЯ", "СЕПАРАЦИЯ", "ПСИХОЗ", "ИСПОВЕДЬ", "ИНТЕГРАЦИЯ", "ВСТРЕЧА", "БЕЗМОЛВИЕ", "БЕЗЫСХОДНОСТЬ", "ПИСЬМО", "СВЯЗЬ", "ВРЕМЯ", "РИТУАЛ", "ШРАМ", "СТРУКТУРА", "ГИПОТЕЗА", "ТРАВМА", "ДЕМОН", "ИСКУССТВО", "КОЖА", "ЛЮБОВЬ", "ТРАНСФОРМАЦИЯ", "БЕГ", "ГОЛОС", "СОБИРАНИЕ"];
+  var WORDS = (typeof LIBRARY_WORDS !== 'undefined') ? LIBRARY_WORDS.slice() : [];
 
   var selected = [];
   var bankEl = document.getElementById('wordBank');
@@ -689,21 +897,89 @@
       btns[i].addEventListener('click', function(e){
         var r = e.target.getAttribute('data-row');
         var c = e.target.getAttribute('data-col');
-        pairText.innerHTML = wordLink(r) + ' × ' + wordLink(c);
+        pairText.innerHTML = '';
+        pairText.appendChild(makeWordLink(r));
+        pairText.appendChild(document.createTextNode(' × '));
+        pairText.appendChild(makeWordLink(c));
         pairResult.style.display = 'block';
         pairResult.scrollIntoView({behavior:'smooth', block:'center'});
       });
     }
   }
 
-  function escapeHtml(s){
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  function makeWordLink(w){
+    var span = document.createElement('span');
+    span.className = 'word-link';
+    span.textContent = w;
+    span.addEventListener('click', function(){ openWordPanel(w.toUpperCase()); });
+    return span;
   }
 
-  function wordLink(w){
-    var safe = escapeHtml(w);
-    return '<a href="biblioteka-vozmozhnyh-tem.html?word=' + encodeURIComponent(w.toUpperCase()) + '" target="_blank" rel="noopener">' + safe + '</a>';
+  var overlayEl = document.getElementById('overlay');
+  var panelEl = document.getElementById('panel');
+  var panelBodyEl = document.getElementById('panel-body');
+  var currentPanelWord = null;
+
+  function openWordPanel(word){
+    currentPanelWord = word;
+    renderWordDomainList(word);
+    overlayEl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    panelEl.scrollTop = 0;
   }
+
+  function renderWordDomainList(word){
+    var cards = (typeof LIBRARY_DATA !== 'undefined' && LIBRARY_DATA[word]) || [];
+    var items = cards.map(function(c, i){
+      return '<li onclick="showWordCard(\'' + escapeAttr(word) + '\', ' + i + ')">' +
+        '<span class="dname">' + word + ' ' + (c.sep || 'и') + ' ' + (c.domain || '…') + '</span>' +
+        '<span class="arrow">→</span></li>';
+    }).join('');
+    panelBodyEl.innerHTML =
+      '<h2>' + word + '</h2>' +
+      '<div class="hint">' + cards.length + ' источников на эту тему</div>' +
+      '<ul id="domain-list">' + items + '</ul>';
+  }
+
+  window.showWordCard = function(word, index){
+    var cards = (typeof LIBRARY_DATA !== 'undefined' && LIBRARY_DATA[word]) || [];
+    var c = cards[index];
+    if(!c) return;
+    var linkHtml = '';
+    if(c.link_url){
+      linkHtml = '<div><a href="' + c.link_url + '" target="_blank" rel="noopener">' + (c.link_text || 'Где почитать →') + '</a></div>';
+    }
+    panelBodyEl.innerHTML =
+      '<button class="word-back-btn" onclick="renderWordDomainListPublic(\'' + escapeAttr(word) + '\')">' + word + '</button>' +
+      '<h2>' + word + ' ' + (c.sep || 'и') + ' ' + (c.domain || '') + '</h2>' +
+      '<div class="hint">&nbsp;</div>' +
+      '<div class="source-card first">' +
+      (c.material ? '<div class="material">' + c.material + '</div>' : '') +
+      (c.type ? '<div class="type">' + c.type + '</div>' : '') +
+      (c.about ? '<div class="about">' + c.about + '</div>' : '') +
+      (c.connection ? '<div class="connection">' + c.connection + '</div>' : '') +
+      (c.question ? '<div class="question">' + c.question + '</div>' : '') +
+      linkHtml +
+      '</div>';
+    panelEl.scrollTop = 0;
+  };
+
+  window.renderWordDomainListPublic = function(word){ renderWordDomainList(word); };
+
+  window.closeWordPanel = function(){
+    overlayEl.classList.remove('open');
+    document.body.style.overflow = '';
+    currentPanelWord = null;
+  };
+
+  function escapeAttr(s){ return s.replace(/'/g, "\\'"); }
+
+  overlayEl.addEventListener('click', function(e){
+    if(e.target.id === 'overlay') closeWordPanel();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeWordPanel();
+  });
 
   document.getElementById('randomBtn').addEventListener('click', function(){
     var pool = WORDS.slice();
@@ -730,6 +1006,56 @@
   });
 
   renderBank();
+})();
+</script>
+
+<script>
+(function(){
+  var QUESTIONS = [
+    "Что такое иллюзия у Фрейда?",
+    "Чем иллюзия отличается от фантазии, ошибки, веры и самообмана?",
+    "Что делает иллюзия для психики?",
+    "Как возникает иллюзия?",
+    "Почему иллюзия не всегда является ошибкой?",
+    "Почему современная культура производит всё больше правдоподобных иллюзий?",
+    "Когда иллюзия поддерживает жизнь, а когда становится защитой от реальности?",
+    "Почему у Винникотта иллюзия становится условием творчества, а не ошибкой восприятия?",
+    "Почему зритель хочет быть обманутым, хотя знает, что перед ним искусственная сцена?",
+    "Как психоанализ и теория искусства объясняют удовольствие от добровольного обмана?",
+    "В каких случаях иллюзия поддерживает психику, а в каких мешает встрече с реальностью?"
+  ];
+  var diceBtn = document.getElementById('diceBtn');
+  var qOverlay = document.getElementById('qOverlay');
+  var qPopup = document.getElementById('qPopup');
+  var lastIndex = -1;
+
+  function pickQuestion(){
+    if(QUESTIONS.length === 1) return QUESTIONS[0];
+    var i;
+    do{ i = Math.floor(Math.random() * QUESTIONS.length); } while(i === lastIndex);
+    lastIndex = i;
+    return QUESTIONS[i];
+  }
+
+  function renderQuestion(){
+    qPopup.innerHTML = pickQuestion() + '<span class="q-hint">Пример вопроса · тапните ещё раз</span>';
+  }
+
+  diceBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    renderQuestion();
+    qOverlay.classList.add('open');
+  });
+  qPopup.addEventListener('click', function(e){
+    e.stopPropagation();
+    renderQuestion();
+  });
+  qOverlay.addEventListener('click', function(){
+    qOverlay.classList.remove('open');
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') qOverlay.classList.remove('open');
+  });
 })();
 </script>
 </body>
