@@ -3,48 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seminar</title>
+<title>Как искать идеи</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Karla:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  :root{
+    --mist:#F2EFEC;
+    --paper:#FAF8F6;
+    --ink:#2B2733;
+    --ink-soft:#453F4C;
+    --plum:#6B4F6B;
+    --rose-ink:#9C5D66;
+    --teal-ink:#4C766D;
+    --line:rgba(43,39,51,0.12);
+  }
+  *{ box-sizing:border-box; }
   body{
     margin:0;
-    background:#F2EFEC;
-    color:#2B2733;
+    background:var(--mist);
+    color:var(--ink);
     font-family:'Karla', system-ui, sans-serif;
     display:flex;
     align-items:center;
     justify-content:center;
     min-height:100vh;
+    padding:24px;
   }
   .card{
-    max-width:420px;
-    padding:32px;
+    max-width:440px;
+    width:100%;
+  }
+  .kicker{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 14px;
   }
   h1{
     font-family:'Cormorant Garamond', serif;
-    font-size:28px;
-    margin-bottom:24px;
+    font-weight:600;
+    font-size:2.4rem;
+    line-height:1.15;
+    margin:0 0 14px;
+    background:linear-gradient(100deg, var(--plum) 0%, var(--rose-ink) 45%, var(--teal-ink) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--plum);
   }
-  a{
+  .subtitle{
+    font-size:1rem;
+    color:var(--ink-soft);
+    margin:0 0 32px;
+    line-height:1.55;
+    max-width:40ch;
+  }
+  .menu a{
     display:block;
     padding:16px 20px;
     margin-bottom:12px;
-    background:#FAF8F6;
-    border:1px solid rgba(43,39,51,0.12);
+    background:var(--paper);
+    border:1px solid var(--line);
     border-radius:10px;
-    color:#6B4F6B;
+    color:var(--plum);
     text-decoration:none;
     font-weight:600;
+    transition:border-color .2s ease, box-shadow .2s ease;
   }
-  a:hover{ background:#eee; }
+  .menu a:hover{ border-color:var(--plum); box-shadow:0 2px 14px rgba(43,39,51,0.06); }
 </style>
 </head>
 <body>
   <div class="card">
-    <h1>Материалы семинара</h1>
-    <a href="biblioteka-vozmozhnyh-tem.html">Библиотека возможных тем</a>
-    <a href="issledovatelskiy-vopros.html">Исследовательские вопросы</a>
-    <a href="tablitsa-slov.html">Брейн-шторм</a>
-    <a href="kak-iskat-istochniki.html">Как искать источники</a>
+    <p class="kicker">Меню</p>
+    <h1>Как искать идеи</h1>
+    <p class="subtitle">Интерактивные материалы о том, откуда берутся темы, вопросы и тексты — и как их находить, когда чистый лист пугает.</p>
+    <div class="menu">
+      <a href="biblioteka-vozmozhnyh-tem.html">Библиотека возможных тем</a>
+      <a href="issledovatelskiy-vopros.html">Исследовательские вопросы</a>
+      <a href="tablitsa-slov.html">Брейн-шторм</a>
+      <a href="kak-iskat-istochniki.html">Как искать источники</a>
+    </div>
   </div>
 </body>
 </html>
