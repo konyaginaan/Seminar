@@ -76,6 +76,22 @@
     transition:border-color .2s ease, box-shadow .2s ease;
   }
   .menu a:hover{ border-color:var(--plum); box-shadow:0 2px 14px rgba(43,39,51,0.06); }
+  .authors{
+    margin:28px 0 0;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.02em;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+  .authors a{
+    color:var(--teal-ink);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .authors a:hover{ color:var(--plum); text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -89,6 +105,7 @@
       <a href="tablitsa-slov.html">Брейн-шторм</a>
       <a href="kak-iskat-istochniki.html">Как искать источники</a>
     </div>
+    <p class="authors">Авторы проекта в Telegram: <a href="https://t.me/chtotonapsy" target="_blank" rel="noopener">@chtotonapsy</a> и <a href="https://t.me/unconsciousjourney" target="_blank" rel="noopener">@unconsciousjourney</a></p>
   </div>
 <script src="telegram-app.js"></script>
 </body>
