@@ -501,21 +501,16 @@
     overflow-wrap:break-word;
   }
   .col-head{
-    position:relative;
     background:rgba(107,79,107,0.08);
-    padding:0;
+    padding:8px 3px;
     vertical-align:bottom;
   }
   .col-head-label{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:10px;
-    display:block;
-    text-align:center;
+    writing-mode:vertical-rl;
+    text-orientation:upright;
     color:var(--plum);
     white-space:nowrap;
-    transform:rotate(-90deg);
+    letter-spacing:0;
   }
   .row-head{
     color:var(--teal-ink);
