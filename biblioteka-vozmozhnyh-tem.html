@@ -499,6 +499,15 @@ setupSearch();
 })();
 </script>
 <script src="telegram-app.js"></script>
+<script>
+  window.goatcounter = {
+    path: function(p) {
+      var inTelegram = !!(window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData);
+      return (inTelegram ? 'telegram' : 'web') + p;
+    }
+  };
+</script>
+<script data-goatcounter="https://konyaginaan.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>
